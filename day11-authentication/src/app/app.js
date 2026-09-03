@@ -1,7 +1,6 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
 
-
 const app = express()
 app.use(express.json())
 
@@ -10,8 +9,6 @@ app.get('/api',(req,res)=>{
         message:"Welcome to Authentication API"
     })
 })
-
-
 app.post("/api/auth/register",(req,res)=>{
     const {email, name, password} = req.body
 
@@ -28,8 +25,4 @@ app.post("/api/auth/register",(req,res)=>{
         token
     })
 })
-
-
-
-
 export default app
