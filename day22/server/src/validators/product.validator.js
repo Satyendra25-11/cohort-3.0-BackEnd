@@ -27,5 +27,27 @@ export const createProductValidator = [
     body("price.currency")
         .exists().withMessage("Currency is required")
         .isString().withMessage("Currency must be a string value")
-        .isIn(["INR", "USD"]).withMessage("Currency either be INR or USD")
+        .isIn(["INR", "USD"]).withMessage("Currency either be INR or USD"),
+    body("sizes")
+    .exists().withMessage("Sizes are required").bail()
+    .isArray().withMessage("Sizes must be an array of object"),
+    body("sizes.*.size")
+        .exists().withMessage("Size must be present in every entry of sizes array").bail()
+        .isString().withMessage("Size must be an string value").bail()
+        .isIn("XS","S","M","L","XL","XXL").withMessage("Size can be one of these XS, S, M, L, XL, XXL"),
+    body("sizes.*.stock")
+        .exists().withMessage("Stock must be present in every entry of the size array").bail()
+        .isInt({min: 0}).withMessage("Stock must be an integer value").bail(),
+    (req,res, next)=>{
+        const errors = validationResult(req)
+
+        if(!errors.isEmpty()){
+            return res.status(400).json({
+                message:"Invalid request",
+                errors : errors.array
+            })
+        }
+
+        next()
+    }
 ];
