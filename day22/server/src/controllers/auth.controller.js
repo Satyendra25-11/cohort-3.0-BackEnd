@@ -70,7 +70,7 @@ export async function login(req, res) {
       message: "Invalid email or password",
     });
   }
-  console.log("before validate password", user.passwordHash);
+  
 
   const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
 
