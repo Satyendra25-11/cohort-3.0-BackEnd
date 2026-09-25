@@ -34,7 +34,7 @@ export const createProductValidator = [
     body("sizes.*.size")
         .exists().withMessage("Size must be present in every entry of sizes array").bail()
         .isString().withMessage("Size must be an string value").bail()
-        .isIn("XS","S","M","L","XL","XXL").withMessage("Size can be one of these XS, S, M, L, XL, XXL"),
+        .isIn(["XS","S","M","L","XL","XXL"]).withMessage("Size can be one of these XS, S, M, L, XL, XXL"),
     body("sizes.*.stock")
         .exists().withMessage("Stock must be present in every entry of the size array").bail()
         .isInt({min: 0}).withMessage("Stock must be an integer value").bail(),
@@ -42,10 +42,12 @@ export const createProductValidator = [
         const errors = validationResult(req)
 
         if(!errors.isEmpty()){
+            console.log(errors.array());
             return res.status(400).json({
-                message:"Invalid request",
-                errors : errors.array
+                message:"Invalid request from product validator",
+                errors : errors.array()
             })
+            
         }
 
         next()
