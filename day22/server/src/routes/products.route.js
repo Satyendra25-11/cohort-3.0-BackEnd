@@ -1,8 +1,7 @@
 import { Router } from "express";
-// import productModel from "../models/product.model.js";
-import { createProductValidator, unlistProductValidator } from "../validators/product.validator.js";
+import { createProductValidator, listProductValidator, unlistProductValidator } from "../validators/product.validator.js";
 import { authenticate, authenticateSeller } from "../middleware/auth.middleware.js";
-import { createProduct, listAllProducts, unlistProduct } from "../controllers/product.controller.js";
+import { createProduct, listAllProducts, listProduct, unlistProduct } from "../controllers/product.controller.js";
 import multer from "multer";
 
 const upload = multer({ 
@@ -31,11 +30,19 @@ router.post( "/", authenticate, authenticateSeller
 
 
 
+// Read all published products from db
 router.get("/",authenticate, listAllProducts)
+
+
+
+// Read all products form db
+router.get("/seller", authenticate, authenticateSeller)
+
 
 
 router.patch("/unlist/:id",authenticate,authenticateSeller, unlistProductValidator, unlistProduct)
 
+router.patch("/list/:id",authenticate,authenticateSeller, listProductValidator, listProduct)
 
 
 export default router;

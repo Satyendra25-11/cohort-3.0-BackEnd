@@ -26,4 +26,4 @@ export const addToCartValidator = [
         next()
     }
 
-]
+]   
